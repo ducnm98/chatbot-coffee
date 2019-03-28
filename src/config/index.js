@@ -1,4 +1,4 @@
 module.exports = {
     serectKey: "chatbot_courses.secret",
-    domain: 'http://localhost:1301'
+    domain: 'http://localhost:1307'
 }
