@@ -6,6 +6,9 @@ var logger = require('morgan');
 var passport = require("passport");
 var session = require('express-session');
 var config = require("config/index");
+var { VERIFY_TOKEN } = require("config/fbwebhook");
+var { getFullInfo } = require('services/fbwebhookprocess');
+var { directMessage } = require('fbHandle');
 
 require('model/connect');
 require('model/schema');
@@ -43,6 +46,34 @@ app.use(passport.session()); //persistent login sessions
 
 
 require('config/passport')(passport);
+
+app.get("/fbwebhook", async (req, res, next) => {
+  let mode = req.query["hub.mode"];
+  let token = req.query["hub.verify_token"];
+  let challenge = req.query["hub.challenge"];
+
+  if (mode && token === VERIFY_TOKEN) {
+    res.status(200).send(challenge);
+  } else {
+    res.status(403).send();
+  }
+});
+
+app.post("/fbwebhook", async (req, res, next) => {
+  var data = req.body;
+
+  if (data.object == "page") {
+    data.entry.forEach(async (pageEntry) => {
+      var pageID = pageEntry.id;
+      var timeOfEvent = pageEntry.time;
+      let user = await getFullInfo(pageEntry.messaging, app);
+      user.forEach(messagingEvent => {
+        directMessage(messagingEvent, app)
+      })
+    });
+    res.status(200).send();
+  }
+});
 require('app/routes')(app)
 
 // catch 404 and forward to error handler

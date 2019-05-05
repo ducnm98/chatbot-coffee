@@ -1,0 +1,52 @@
+module.exports = {
+  receivedMessage: async (event, app) => {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var message = event.message;
+    console.log(event.sender);
+    console.log(message);
+
+    var isEcho = message.is_echo;
+    var messageId = message.mid;
+    var appId = message.app_id;
+    var metadata = message.metadata;
+
+    // You may get a text or attachment but not both
+    var messageText = message.text;
+    var messageAttachments = message.attachments;
+    var quickReply = message.quick_reply;
+    console.log("messageText: ", messageText);
+    if (isEcho) {
+      console.log(
+        "Received echo for message %s and app %d with metadata %s",
+        messageId,
+        appId,
+        metadata
+      );
+      return;
+    }
+
+    if (quickReply) {
+      var headerPayload = quickReply.payload.split("-");
+      let head = headerPayload[0];
+      let tail = headerPayload[1];
+      console.log("head, tail", head, tail);
+      switch (head) {
+        case "#dangkynhom":
+      }
+      // do what after user tap quick reply.
+    }
+
+    if (messageText) {
+      messageText = messageText.trim();
+      let preProcessData = messageText.split(" ");
+      var head = preProcessData[0];
+      var tail = preProcessData[1];
+
+      switch (head) {
+        case "#dangky":
+      }
+    }
+  },
+};
