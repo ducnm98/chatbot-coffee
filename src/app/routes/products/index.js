@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', uploadFile.StoreFile().any(), async (req, res) => {
     try {
         req.files[0].link = req.files[0].destination.substring(14, req.files[0].destination.length) + '/' + req.files[0].filename;
-        req.body.imageLink = `${domain}${req.files[0].link}`
+        req.body.imageLink = `${domain}/${req.files[0].link}`
         await mongoose.model('products').create({ ...req.body })
         return res.redirect('/products')
     } catch (error) {
