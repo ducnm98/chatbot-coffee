@@ -62,13 +62,15 @@ app.get("/fbwebhook", async (req, res, next) => {
 app.post("/fbwebhook", async (req, res, next) => {
   var data = req.body;
 
+  console.log(data)
   if (data.object == "page") {
     data.entry.forEach(async (pageEntry) => {
       var pageID = pageEntry.id;
       var timeOfEvent = pageEntry.time;
       let user = await getFullInfo(pageEntry.messaging, app);
+      console.log(user)
       user.forEach(messagingEvent => {
-        directMessage(messagingEvent, app)
+        directMessage(messagingEvent)
       })
     });
     res.status(200).send();

@@ -2,13 +2,13 @@
 var { receivedMessage } = require('./receivedMessage')
 var { receivedPostback } = require('./receivedPostback')
 module.exports = {
-  directMessage: (messagingEvent, app) => {
+  directMessage: (messagingEvent) => {
     if (messagingEvent.message) {
-      receivedMessage(messagingEvent, app);
+      receivedMessage(messagingEvent);
     } else if (messagingEvent.delivery) {
       // messageProcess.receivedDeliveryConfirmation(messagingEvent);
     } else if (messagingEvent.postback) {
-      receivedPostback(messagingEvent, app)
+      receivedPostback(messagingEvent)
       // messageProcess.receivedPostback(messagingEvent);
     } else if (messagingEvent.read) {
       // messageProcess.receivedMessageRead(messagingEvent);

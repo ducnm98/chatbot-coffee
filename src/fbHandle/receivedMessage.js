@@ -1,5 +1,7 @@
+let chatbot = require('./chatbot');
+
 module.exports = {
-  receivedMessage: async (event, app) => {
+  receivedMessage: async (event) => {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
@@ -33,7 +35,8 @@ module.exports = {
       let tail = headerPayload[1];
       console.log("head, tail", head, tail);
       switch (head) {
-        case "#dangkynhom":
+        case "#approve":
+          await chatbot.approveProduct(senderID, tail)
       }
       // do what after user tap quick reply.
     }
@@ -45,7 +48,12 @@ module.exports = {
       var tail = preProcessData[1];
 
       switch (head) {
-        case "#dangky":
+        case "#diachi":
+          await chatbot.saveLocation(senderID, messageText);
+          break;
+        case "#sdt":
+          await chatbot.savePhone(senderID, messageText);
+          break;
       }
     }
   },

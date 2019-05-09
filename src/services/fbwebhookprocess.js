@@ -95,6 +95,7 @@ module.exports = {
 
   sendListInfo: (recipientId, elements, buttons = null, cover = false) => {
     return new Promise(async (reslove, reject) => {
+      console.log(elements)
       var messageData = {
         recipient: {
           id: recipientId
@@ -181,6 +182,76 @@ module.exports = {
         method: 'POST',
         json: messageData
       }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var recipientId = body.recipient_id;
+          var messageId = body.message_id;
+          reslove(true);
+        } else {
+          reject(response.statusCode)
+        }
+      });
+    })
+  },
+  sendBill: (recipientId, data, elements) => {
+    return new Promise(async (reslove, reject) => {
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          "attachment":{
+            "type":"template",
+            "payload":{
+              "template_type":"receipt",
+              "recipient_name": data.recipient_name,
+              "order_number": data._id,
+              "currency": "VND",
+              "payment_method": "cash",        
+              // "order_url":"http://petersapparel.parseapp.com/order?order_id=123456",
+              // "timestamp": new Date().getTime(),         
+              "address":{
+                "street_1": data.location,
+                "city": "HCM",
+                "postal_code":"70000",
+                "state": "Hồ Chí Minh City",
+                "country":"VN"
+              },
+              "summary":{
+                "subtotal": data.cost,
+                "shipping_cost": 0,
+                "total_tax": 0,
+                "total_cost": data.cost
+              },
+              elements,
+              // "elements":[
+              //   {
+              //     "title":"Classic White T-Shirt",
+              //     "subtitle":"100% Soft and Luxurious Cotton",
+              //     "quantity":2,
+              //     "price":50,
+              //     "currency":"USD",
+              //     "image_url":"http://petersapparel.parseapp.com/img/whiteshirt.png"
+              //   },
+              //   {
+              //     "title":"Classic Gray T-Shirt",
+              //     "subtitle":"100% Soft and Luxurious Cotton",
+              //     "quantity":1,
+              //     "price":25,
+              //     "currency":"USD",
+              //     "image_url":"http://petersapparel.parseapp.com/img/grayshirt.png"
+              //   }
+              // ]
+            }
+          }
+        }
+      };
+      request({
+        uri: 'https://graph.facebook.com/v3.2/me/messages',
+        qs: { access_token: PAGE_ACCESS_TOKEN },
+        method: 'POST',
+        json: messageData
+      }, function (error, response, body) {
+        console.log(response)
         if (!error && response.statusCode == 200) {
           var recipientId = body.recipient_id;
           var messageId = body.message_id;

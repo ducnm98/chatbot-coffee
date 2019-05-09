@@ -7,6 +7,12 @@ var customers = new mongoose.Schema({
     },
     fullName: {
         type: String
+    },
+    location: {
+        type: String
+    },
+    numberphone: {
+        type: String
     }
 })
 

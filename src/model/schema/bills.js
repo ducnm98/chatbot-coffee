@@ -12,9 +12,6 @@ var bills = new mongoose.Schema({
     isPaied: {
         type: Boolean,
         default: false
-    },
-    locations: {
-        type: String
     }
 })
 
