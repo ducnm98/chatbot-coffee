@@ -162,6 +162,7 @@ module.exports = {
             payload: `#approve-${item}-${tail}`
           })
         })
+        console.log('run here', buttons)
         await sendImage(senderId, product.imageLink)
         await sendQuickReplies(senderId, `Bạn ${user.fullName} vui lòng chọn thời gian giao sản phẩm ${product.title}`,buttons)
       } catch (err) {
