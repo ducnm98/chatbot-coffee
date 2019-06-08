@@ -36,7 +36,11 @@ module.exports = {
       console.log("head, tail", head, tail);
       switch (head) {
         case "#approve":
-          await chatbot.approveProduct(senderID, tail)
+          await chatbot.approveProduct(senderID, headerPayload[1], headerPayload[2]);
+          break;
+        case '#time':
+          await chatbot.chooseTime(senderID, tail);
+          break;
       }
       // do what after user tap quick reply.
     }
