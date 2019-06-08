@@ -33,7 +33,7 @@ module.exports = {
       var headerPayload = quickReply.payload.split("-");
       let head = headerPayload[0];
       let tail = headerPayload[1];
-      console.log("head, tail", head, tail);
+      console.log("head, tail", headerPayload);
       switch (head) {
         case "#approve":
           await chatbot.approveProduct(senderID, headerPayload[1], headerPayload[2]);

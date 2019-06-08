@@ -9,24 +9,24 @@ module.exports = {
         
         if (mins >= 0 && mins < 15) {
             for (let i = hour; i <= maxHours; i++) {
-                chooseTime.push(`${i}:15 - ${i}:30`)
+                chooseTime.push(`từ ${i}:15 đến ${i}:30`)
             }
         }
         if (mins >= 15 && mins < 30) {
             for (let i = hour; i <= maxHours; i++) {
-                chooseTime.push(`${i}:30 - ${i}:45`)
+                chooseTime.push(`từ ${i}:30 đến ${i}:45`)
             }
         }
 
         if (mins >= 30 && mins < 45) {
             for (let i = hour; i <= maxHours; i++) {
-                chooseTime.push(`${i}:45 - ${i + 1}:00`)
+                chooseTime.push(`từ ${i}:45 đến ${i + 1}:00`)
             }
         }
 
         if (mins >= 45 && mins <= 59) {
             for (let i = hour; i <= maxHours; i++) {
-                chooseTime.push(`${i+1}:00 - ${i+1}:15`)
+                chooseTime.push(`từ ${i+1}:00 đến ${i+1}:15`)
             }
         }
 
