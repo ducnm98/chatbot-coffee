@@ -1,6 +1,7 @@
+var moment = require('moment');
 module.exports = {
     getTime: () => {
-        let today = new Date();
+        let today = new Date(moment().utc(7))
         let hour = today.getHours();
         let mins = today.getMinutes();
         let chooseTime = [];
