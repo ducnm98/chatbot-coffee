@@ -20,7 +20,9 @@ module.exports = {
         await chatbot.confirmProduct(senderID, tail)
         break;
       case "#approve":
-        await chatbot.approveProduct(senderID)
+        await chatbot.approveProduct(senderID, preProcessData[1], preProcessData[2]);
+      case '#time':
+        await chatbot.chooseTime(senderID, tail)
       default:
         await chatbot.intro(senderID);
         break;

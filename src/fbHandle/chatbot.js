@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var { LIMIT } = require("config/index");
 var { sendListInfo, sendText, sendImage, sendQuickReplies, sendBill } = require("services/fbwebhookprocess");
 var _ = require('lodash');
+var { getTime } = require('services/getTime');
 
 module.exports = {
   intro: async (senderId) => {
@@ -70,7 +71,7 @@ module.exports = {
           {
             title: "Đồng ý",
             "content_type":"text",
-            payload: `#approve-${tail}`,
+            payload: `#time-${tail}`,
           },
           {
             title: "Từ chối",
@@ -90,14 +91,15 @@ module.exports = {
       }
     })
   },
-  approveProduct: (senderId, tail) => {
+  approveProduct: (senderId, time, tail) => {
     return new Promise(async (resolve, reject) => {
       try {
         let user = await mongoose.model('customers').findOne({ facebookId: senderId })
         let product = await mongoose.model('products').findById(tail);
         let order = await mongoose.model('bills').create({
           customerId: user._id,
-          productId: product._id
+          productId: product._id,
+          time
         })
         let data = {
           recipient_name: user.fullName,
@@ -145,6 +147,27 @@ module.exports = {
         reject(err)
       }
     })
-  }
+  },
+  chooseTime: (senderId, tail) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let product = await mongoose.model('products').findById(tail);
+        let user = await mongoose.model('customers').findOne({ facebookId: senderId });
+        let times = getTime();
+        let buttons = []
+        times.map(item => {
+          buttons.push({
+            title: item,
+            "content_type":"text",
+            payload: `#approve-${item}-${tail}`
+          })
+        })
+        await sendImage(senderId, product.imageLink)
+        await sendQuickReplies(senderId, `Bạn ${user.fullName} vui lòng chọn thời gian giao sản phẩm ${product.title}`,buttons)
+      } catch (err) {
+        reject(err);
+      }
+    })
+  },
 };
 
