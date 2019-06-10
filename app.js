@@ -76,6 +76,11 @@ app.post("/fbwebhook", async (req, res, next) => {
     res.status(200).send();
   }
 });
+app.post("/confirm", async (req,res,next) => {
+    var data = req.body;
+    var number = 1;
+    sendText(data.recipientId, `Đã xác nhận quý khách đặt ${number} ${data.product} giá ${data.price}`);
+});
 require('app/routes')(app)
 
 // catch 404 and forward to error handler
