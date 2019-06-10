@@ -55,7 +55,7 @@
             <div class="row">
               <div class="col-12">
                 <div class="card-box table-responsive">
-                  <h4 class="m-t-0 header-title">Prodcuts List</h4>
+                  <h4 class="m-t-0 header-title">Products List</h4>
                   <p class="text-muted font-14 m-b-30">
                     The Buttons extension for DataTables provides a common set
                     of options, API methods and styling to display buttons on a
@@ -94,7 +94,11 @@
                     <tbody>
                       <% bills.map((item, index) => { %>
                       <tr>
-                        <td><%- index + 1 %></td>
+                        <td>
+                          <%- index + 1 %>
+                          <button type="button" class="btn btn-secondary btn-confirm"
+                                  onclick="confirm('<%- item.customerId.facebookId%>', '<%item.productId.title%>', '<%item.productId.price%>')">Xác nhận</button>
+                        </td>
                         <td><%- item.customerId.fullName %></td>
                         <td><%- item.customerId.location %></td>
                         <td><%- item.customerId.numberphone %></td>
@@ -191,6 +195,22 @@
           .container()
           .appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
       });
+    </script>
+    <script>
+      function confirm(recipientId, product, price) {
+        $('.btn-confirm').removeClass().addClass("btn btn-light btn-confirm");
+        $('.btn-confirm').text("Đã xác nhận");
+        console.log(recipientId);
+        $.ajax({
+          url: "/confirm",
+          method: "POST",
+          data: {
+            recipientId: recipientId,
+            product: product,
+            price: price
+          }
+        })
+      }
     </script>
     <script>
       function setStatus(id, status) {
